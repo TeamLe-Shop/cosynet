@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+#include "server.h"
+
+int main()
+{
+    int port = DEFAULT_PORT;
+
+    Server* server = Server_Create(port, PF_INET6);
+    printf("CosyServer launched, port = %d\n", port);
+
+    Server_Cycle();
+
+    Server_Destroy(server);
+    printf("CosyServer stopped\n");
+    return 0;
+}
