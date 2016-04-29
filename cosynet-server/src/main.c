@@ -6,10 +6,10 @@ int main()
 {
     int port = DEFAULT_PORT;
 
-    Server* server = Server_Create(port, PF_INET6);
+    Server* server = Server_Create(port, PF_INET);
     printf("CosyServer launched, port = %d\n", port);
 
-    Server_Cycle();
+    Server_Cycle(server);
 
     Server_Destroy(server);
     printf("CosyServer stopped\n");

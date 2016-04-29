@@ -21,7 +21,7 @@ Server* Server_Create(int port, Domain domain)
     IPAddress* ip4addr = (IPAddress*)&server->address;
     IP6Address* ip6addr = (IP6Address*)&server->address;
 
-    int bind_result;
+    int bind_result = 0;
 
     switch (domain) {
     case PF_INET:
@@ -63,17 +63,18 @@ void Server_Destroy(Server* server)
 void Server_Cycle(Server* server)
 {
     Address address;
-    socklen_t socket_size = sizeof(Address);
+    socklen_t socket_size = sizeof(address);
     Socket client;
 
-    if ((client = accept(server->socket, &address, &socket_size) < 0)) {
+    if ((client = accept(server->socket, (struct sockaddr *)&address,
+                         &socket_size)) < 0) {
         error("Failed to accept incoming connection");
     }
 
     char* message = "Hello! We do not currently sustain connections. "
-                    "You will be disconnected shortly.";
+                    "You will be disconnected shortly.\n";
 
-    write(socket_size, message, strlen(message) + 1);
+    send(client, message, strlen(message) + 1, 0);
 
     close(socket_size);
 }
